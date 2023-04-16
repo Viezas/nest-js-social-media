@@ -4,6 +4,18 @@ In this project, we are going to create an API for an Instagram like social medi
 
 ---
 
+## Environment variables
+
+-   `.env` - Environment variables can be set in this file
+
+**_Note_** : You can quickly set the database information and other variables in this file and have the application fully working.
+
+Copy the example env file and make the required configuration changes in the .env file (**Set database connection**)
+
+    cp .env.example .env
+
+---
+
 ## Database
 
 For more convenience, you can find an .sql file which contain our database already filled with data
