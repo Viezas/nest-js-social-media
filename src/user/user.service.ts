@@ -29,7 +29,7 @@ export class UserService {
     const userToDelete = await this.usersRepository.findOneBy({ id });
     // Si l'élément avec l'id donné n'est pas trouvé, renvoie une erreur NotFoundException
     if (!userToDelete)
-      return new NotFoundException('did you find this user 🥶');
+      return new NotFoundException("id introuvable");
     await this.usersRepository.delete(id);
     return { deletedUsers: 1, nbUsers: await this.usersRepository.count() };
   }
@@ -38,7 +38,7 @@ export class UserService {
     const userToUpdate = await this.usersRepository.findOneBy({ id });
     // Si l'élément avec l'id donné n'est pas trouvé, renvoie une erreur NotFoundException
     if (!userToUpdate)
-      return new NotFoundException('did you find this user 🥶');
+      return new NotFoundException("id introuvable");
     // Mettre à jour une seule propriété
     if (user.first_name) userToUpdate.first_name = user.first_name;
     if (user.last_name) userToUpdate.last_name = user.last_name;
