@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Users } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
@@ -41,9 +42,10 @@ export class UserService {
     if (user.last_name) userToUpdate.last_name = user.last_name;
     if (user.username) userToUpdate.username = user.username;
     if (user.email) userToUpdate.email = user.email;
-    if (user.password) userToUpdate.password = user.password;
+    if (user.password) userToUpdate.password = bcrypt.hashSync(user.password, 12) //saltRounds = 12
     if (user.phone) userToUpdate.phone = user.phone;
     if (user.pfp_url) userToUpdate.pfp_url = user.pfp_url;
+    if (user.remember_token) userToUpdate.remember_token = user.remember_token;
     await this.usersRepository.save(userToUpdate)
     return { updateUsers: 1, user: userToUpdate };
   }
@@ -58,9 +60,10 @@ export class UserService {
     userToUpdate.last_name = user.last_name
     userToUpdate.username = user.username
     userToUpdate.email = user.email
-    userToUpdate.password = user.password
+    userToUpdate.password = bcrypt.hashSync(user.password, 12) //saltRounds = 12
     userToUpdate.phone = user.phone
     userToUpdate.pfp_url = user.pfp_url
+    userToUpdate.remember_token = user.remember_token;
     await this.usersRepository.save(userToUpdate)
     return { updateUsers: 1, user: userToUpdate };
   }
