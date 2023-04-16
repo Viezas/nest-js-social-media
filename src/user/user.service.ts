@@ -11,35 +11,55 @@ export class UserService {
     private usersRepository: Repository<Users>,
   ) {}
 
+  /**
+   * Get all users
+   */
   async all(): Promise<Users[]> {
     return this.usersRepository.find();
   }
 
+  /**
+   * Get one user
+   * @param id: id: id of user
+   */
   find(id: number): Promise<Users | null> {
     return this.usersRepository.findOneBy({ id });
   }
 
+  /**
+   * Add one user
+   * @param user: a new user
+   */
   async createUser(user: Users): Promise<any> {
     user.password = bcrypt.hashSync(user.password, 12) //saltRounds = 12
     await this.usersRepository.insert(user);
     return { addUsers: 1, user: user };
   }
 
+  /**
+   * Delete one user
+   * @param id: id of user
+   */
   async deleteUser(id: number): Promise<any> {
     const userToDelete = await this.usersRepository.findOneBy({ id });
-    // Si l'élément avec l'id donné n'est pas trouvé, renvoie une erreur NotFoundException
+    // If the element with the given id is not found, throws a NotFoundException error
     if (!userToDelete)
       return new NotFoundException("id introuvable");
     await this.usersRepository.delete(id);
     return { deletedUsers: 1, nbUsers: await this.usersRepository.count() };
   }
 
+  /**
+   * Update one user
+   * @param id: id of user
+   * @param user: user updated
+   */
   async patchUser(id: number, user: Users) {
     const userToUpdate = await this.usersRepository.findOneBy({ id });
-    // Si l'élément avec l'id donné n'est pas trouvé, renvoie une erreur NotFoundException
+    // If the element with the given id is not found, throws a NotFoundException error
     if (!userToUpdate)
       return new NotFoundException("id introuvable");
-    // Mettre à jour une seule propriété
+    // Update a single property
     if (user.first_name) userToUpdate.first_name = user.first_name;
     if (user.last_name) userToUpdate.last_name = user.last_name;
     if (user.username) userToUpdate.username = user.username;
@@ -54,10 +74,10 @@ export class UserService {
 /*
   async putUser(id: number, user: Users) {
     const userToUpdate = await this.usersRepository.findOneBy({ id });
-    // Si l'élément avec l'id donné n'est pas trouvé, renvoie une erreur NotFoundException
+    // If the element with the given id is not found, throws a NotFoundException error
     if (!userToUpdate)
       return new NotFoundException('did you find this user 🥶');
-    // Mettre à jour une seule propriété
+    // Update a single property
     userToUpdate.first_name = user.first_name
     userToUpdate.last_name = user.last_name
     userToUpdate.username = user.username
