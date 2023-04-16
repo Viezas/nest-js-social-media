@@ -27,13 +27,13 @@ export class UserController {
     return this.userService.createUser(user);
   }
 
-  @Delete('delete/:id')
+  @Delete(':id/delete')
   @HttpCode(200)
   deleteUser(@Param('id') id: number) {
     return this.userService.deleteUser(id);
   }
 
-  @Patch('update/:id')
+  @Patch(':id/update')
   @HttpCode(200)
   patchUser(@Param('id') id: number, @Body() user: Users) {
     return this.userService.patchUser(id, user);
