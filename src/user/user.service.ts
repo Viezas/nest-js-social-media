@@ -51,7 +51,7 @@ export class UserService {
     await this.usersRepository.save(userToUpdate)
     return { updateUsers: 1, user: userToUpdate };
   }
-
+/*
   async putUser(id: number, user: Users) {
     const userToUpdate = await this.usersRepository.findOneBy({ id });
     // Si l'élément avec l'id donné n'est pas trouvé, renvoie une erreur NotFoundException
@@ -69,4 +69,5 @@ export class UserService {
     await this.usersRepository.save(userToUpdate)
     return { updateUsers: 1, user: userToUpdate };
   }
+ */
 }

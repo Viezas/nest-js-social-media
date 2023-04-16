@@ -22,27 +22,27 @@ export class UserController {
     return this.userService.find(id);
   }
 
-  @Post()
+  @Post('create')
   addUser(@Body() user: Users) {
     return this.userService.createUser(user);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   @HttpCode(200)
   deleteUser(@Param('id') id: number) {
     return this.userService.deleteUser(id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @HttpCode(200)
   patchUser(@Param('id') id: number, @Body() user: Users) {
     return this.userService.patchUser(id, user);
   }
-
+/*
   @Put(':id')
   @HttpCode(200)
   putUser(@Param('id') id: number, @Body() user: Users) {
     return this.userService.putUser(id, user);
   }
-
+*/
 }
