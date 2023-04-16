@@ -20,7 +20,9 @@ export class UserService {
   }
 
   async createUser(user: Users): Promise<any> {
+    user.password = bcrypt.hashSync(user.password, 12) //saltRounds = 12
     await this.usersRepository.insert(user);
+    return { addUsers: 1, user: user };
   }
 
   async deleteUser(id: number): Promise<any> {
