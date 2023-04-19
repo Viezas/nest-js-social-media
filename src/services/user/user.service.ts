@@ -40,12 +40,12 @@ export class UserService {
   /**
    * Create a new user
    *
-   * @param Users user
+   * @param Users request
    *
    * @returns Promise
    * @throws NotAcceptableException
    */
-  async store(request: Users): Promise<any> {
+  async store(request: Users): Promise<Users | NotAcceptableException> {
     let user_exists = false;
 
     for (let i = 0; i < uniqueFields.length; i++) {
@@ -82,10 +82,14 @@ export class UserService {
 
   /**
    * Update a user
+   *
    * @param number id
-   * @param Users user
+   * @param Users request
    */
-  async update(id: number, request: Users) {
+  async update(
+    id: number,
+    request: Users,
+  ): Promise<Users | NotFoundException | NotAcceptableException> {
     const user = await this.userModel.findOne({
       where: { id },
     });
@@ -113,8 +117,6 @@ export class UserService {
         'Cannot update the user with provided data',
       );
     } else {
-      request.password = this.hashPassword(request.password);
-      request.updated_at = new Date();
       await this.userModel.update(
         {
           first_name: request.first_name,

@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Users } from './sequelize/user.schema';
+import { CategoryModule } from './modules/category/category.module';
+import { Categories } from './sequelize/category.schema';
 
 @Module({
   imports: [
@@ -16,9 +18,10 @@ import { Users } from './sequelize/user.schema';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [Users],
+      models: [Users, Categories],
     }),
     UserModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

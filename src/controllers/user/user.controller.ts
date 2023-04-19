@@ -9,6 +9,8 @@ import {
   ParseIntPipe,
   Put,
   UsePipes,
+  NotAcceptableException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserPipe } from 'src/pipes/user/user.pipe';
 import { UserService } from 'src/services/user/user.service';
@@ -55,19 +57,26 @@ export class UserController {
   @Post('store')
   @HttpCode(201)
   @UsePipes(new UserPipe(userValidator))
-  store(@Body() request: Users): Promise<Users> {
+  store(@Body() request: Users): Promise<Users | NotAcceptableException> {
     return this.userService.store(request).then((user) => {
       return user;
     });
   }
 
+  /**
+   * Upodate a user by id
+   * 
+   * @param number id 
+   * @param Users request 
+   * @returns Promise
+   */
   @Put(':id/update')
   @HttpCode(200)
   update(
     @Param('id', ParseIntPipe)
     id: number,
     @Body() request: Users,
-  ) {
+  ): Promise<Users | NotFoundException | NotAcceptableException> {
     return this.userService.update(id, request).then((user) => {
       return user;
     });
