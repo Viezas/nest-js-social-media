@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique, Timestamp } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
 @Unique(['username', 'phone', 'email'])
@@ -19,9 +19,9 @@ export class Users {
   email: string;
 
   @Column({
-    type: 'timestamp'
+    type: 'date',
   })
-  email_verified_at: Timestamp;
+  email_verified_at: Date;
 
   @Column()
   password: string;
@@ -36,12 +36,12 @@ export class Users {
   remember_token: string;
 
   @Column({
-    type: 'timestamp'
+    type: 'date',
   })
-  created_at: Timestamp;
+  created_at: Date;
 
   @Column({
-    type: 'timestamp'
+    type: 'date',
   })
-  updated_at: Timestamp;
+  updated_at: Date;
 }
