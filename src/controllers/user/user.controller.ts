@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { UserPipe } from 'src/pipes/user/user.pipe';
 import { UserService } from 'src/services/user/user.service';
-import { Users } from 'src/typeorm/user.schema';
+import { Users } from 'src/sequelize/user.schema';
 import userValidator from 'src/validations/user/user.validation';
 
 @Controller('users')

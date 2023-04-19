@@ -3,17 +3,16 @@ import {
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/typeorm/user.schema';
-import { Repository } from 'typeorm';
+import { InjectModel } from '@nestjs/sequelize';
+import { Users } from 'src/sequelize/user.schema';
 const bcrypt = require('bcrypt');
 const uniqueFields = ['email', 'username', 'phone'];
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(Users)
-    private usersRepository: Repository<Users>,
+    @InjectModel(Users)
+    private userModel: typeof Users,
   ) {}
 
   /**
@@ -22,7 +21,7 @@ export class UserService {
    * @returns Promise
    */
   all(): Promise<Users[]> {
-    return this.usersRepository.find();
+    return this.userModel.findAll();
   }
 
   /**
@@ -33,7 +32,9 @@ export class UserService {
    * @returns Promise
    */
   find(id: number): Promise<Users | null> {
-    return this.usersRepository.findOneBy({ id });
+    return this.userModel.findOne({
+      where: { id },
+    });
   }
 
   /**
@@ -49,8 +50,10 @@ export class UserService {
 
     for (let i = 0; i < uniqueFields.length; i++) {
       const field = uniqueFields[i];
-      const user_found = await this.usersRepository.findOneBy({
-        [field]: request[field],
+      const user_found = await this.userModel.findOne({
+        where: {
+          [field]: request[field],
+        },
       });
       if (user_found) {
         user_exists = true;
@@ -63,10 +66,17 @@ export class UserService {
         'Cannot create a new user with provided data',
       );
     } else {
-      request.password = this.hashPassword(request.password);
-      request.created_at = new Date();
-      request.updated_at = new Date();
-      return await this.usersRepository.save(request);
+      return await this.userModel.create({
+        first_name: request.first_name,
+        last_name: request.last_name,
+        username: request.username,
+        email: request.email,
+        password: this.hashPassword(request.password),
+        phone: request.phone,
+        pfp_url: request.pfp_url,
+        created_at: new Date(),
+        updated_at: new Date(),
+      });
     }
   }
 
@@ -76,7 +86,9 @@ export class UserService {
    * @param Users user
    */
   async update(id: number, request: Users) {
-    const user = await this.usersRepository.findOneBy({ id });
+    const user = await this.userModel.findOne({
+      where: { id },
+    });
     if (!user) {
       return new NotFoundException('User not found');
     }
@@ -85,8 +97,10 @@ export class UserService {
 
     for (let i = 0; i < uniqueFields.length; i++) {
       const field = uniqueFields[i];
-      const user_found = await this.usersRepository.findOneBy({
-        [field]: request[field],
+      const user_found = await this.userModel.findOne({
+        where: {
+          [field]: request[field],
+        },
       });
       if (user_found && user_found.id !== user.id) {
         update_user = false;
@@ -101,13 +115,23 @@ export class UserService {
     } else {
       request.password = this.hashPassword(request.password);
       request.updated_at = new Date();
-      await this.usersRepository.update(
+      await this.userModel.update(
         {
-          id: user.id,
+          first_name: request.first_name,
+          last_name: request.last_name,
+          username: request.username,
+          email: request.email,
+          password: this.hashPassword(request.password),
+          phone: request.phone,
+          pfp_url: request.pfp_url,
+          created_at: new Date(),
+          updated_at: new Date(),
         },
-        request,
+        { where: { id } },
       );
-      return await this.usersRepository.findOneBy({ id });
+      return await this.userModel.findOne({
+        where: { id },
+      });
     }
   }
 
@@ -120,13 +144,19 @@ export class UserService {
    * @throws NotFoundException
    */
   async destroy(id: number): Promise<any> {
-    const user = await this.usersRepository.findOneBy({ id });
+    const user = await this.userModel.findOne({
+      where: { id },
+    });
     if (!user) {
       return new NotFoundException("This user doesn't exist");
     }
-    return await this.usersRepository.delete(id).then((response) => {
-      return 'User deleted';
-    });
+    return await this.userModel
+      .destroy({
+        where: { id },
+      })
+      .then((response) => {
+        return 'User deleted';
+      });
   }
 
   /**
