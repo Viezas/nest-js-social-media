@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Posts } from 'src/sequelize/post.schema';
 import { Users } from 'src/sequelize/user.schema';
 const bcrypt = require('bcrypt');
 const uniqueFields = ['email', 'username', 'phone'];
@@ -21,7 +22,7 @@ export class UserService {
    * @returns Promise
    */
   all(): Promise<Users[]> {
-    return this.userModel.findAll();
+    return this.userModel.findAll({ include: [Posts] });
   }
 
   /**
@@ -34,6 +35,7 @@ export class UserService {
   find(id: number): Promise<Users | null> {
     return this.userModel.findOne({
       where: { id },
+      include: [Posts],
     });
   }
 

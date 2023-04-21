@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Categories } from 'src/sequelize/category.schema';
+import { Posts } from 'src/sequelize/post.schema';
 const uniqueFields = ['name'];
 
 @Injectable()
@@ -20,7 +21,7 @@ export class CategoryService {
    * @returns Promise
    */
   all(): Promise<Categories[]> {
-    return this.categoryModel.findAll();
+    return this.categoryModel.findAll({ include: [Posts] });
   }
 
   /**
@@ -33,6 +34,7 @@ export class CategoryService {
   find(id: number): Promise<Categories | null> {
     return this.categoryModel.findOne({
       where: { id },
+      include: [Posts],
     });
   }
 

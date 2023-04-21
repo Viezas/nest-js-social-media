@@ -79,8 +79,8 @@ export class CategoryController {
     id: number,
     @Body() request: Categories,
   ): Promise<Categories | NotFoundException | NotAcceptableException> {
-    return this.categoryService.update(id, request).then((user) => {
-      return user;
+    return this.categoryService.update(id, request).then((category) => {
+      return category;
     });
   }
 

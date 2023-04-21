@@ -7,6 +7,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Users } from './sequelize/user.schema';
 import { CategoryModule } from './modules/category/category.module';
 import { Categories } from './sequelize/category.schema';
+import { PostModule } from './modules/post/post.module';
+import { Posts } from './sequelize/post.schema';
 
 @Module({
   imports: [
@@ -18,10 +20,11 @@ import { Categories } from './sequelize/category.schema';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [Users, Categories],
+      models: [Users, Categories, Posts],
     }),
     UserModule,
     CategoryModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

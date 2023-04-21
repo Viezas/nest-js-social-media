@@ -1,10 +1,12 @@
 import {
   Column,
   CreatedAt,
+  HasMany,
   Model,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { Posts } from './post.schema';
 
 @Table
 export class Categories extends Model {
@@ -16,4 +18,7 @@ export class Categories extends Model {
 
   @UpdatedAt
   updated_at: Date;
+
+  @HasMany(() => Posts)
+  posts: Posts[];
 }
