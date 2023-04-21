@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Categories } from 'src/sequelize/category.schema';
+import { Comments } from 'src/sequelize/comment.schema';
 import { Posts } from 'src/sequelize/post.schema';
 import { Users } from 'src/sequelize/user.schema';
 
@@ -21,7 +22,7 @@ export class PostService {
    * @returns Promise
    */
   all(): Promise<Posts[]> {
-    return this.postModel.findAll({ include: [Users, Categories] });
+    return this.postModel.findAll({ include: [Users, Categories, Comments] });
   }
 
   /**
@@ -34,7 +35,7 @@ export class PostService {
   find(id: number): Promise<Posts | null> {
     return this.postModel.findOne({
       where: { id },
-      include: [Users, Categories],
+      include: [Users, Categories, Comments],
     });
   }
 
@@ -58,20 +59,15 @@ export class PostService {
       return new NotAcceptableException('User or category unknown');
     }
 
-    return await this.postModel.create(
-      {
-        title: request.title,
-        description: request.description,
-        video_url: request.video_url,
-        user_id: request.user_id,
-        category_id: request.category_id,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        include: [Users, Categories],
-      },
-    );
+    return await this.postModel.create({
+      title: request.title,
+      description: request.description,
+      video_url: request.video_url,
+      user_id: request.user_id,
+      category_id: request.category_id,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
   }
 
   /**
@@ -110,7 +106,6 @@ export class PostService {
           video_url: request.video_url,
           user_id: request.user_id,
           category_id: request.category_id,
-          created_at: new Date(),
           updated_at: new Date(),
         },
         { where: { id } },

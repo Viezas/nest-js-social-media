@@ -7,6 +7,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Posts } from './post.schema';
+import { Comments } from './comment.schema';
 
 @Table
 export class Users extends Model {
@@ -45,4 +46,7 @@ export class Users extends Model {
 
   @HasMany(() => Posts)
   posts: Posts[];
+
+  @HasMany(() => Comments)
+  comments: Comments[];
 }

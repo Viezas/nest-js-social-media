@@ -3,12 +3,14 @@ import {
   Column,
   CreatedAt,
   ForeignKey,
+  HasMany,
   Model,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
 import { Categories } from './category.schema';
 import { Users } from './user.schema';
+import { Comments } from './comment.schema';
 
 @Table
 export class Posts extends Model {
@@ -40,4 +42,7 @@ export class Posts extends Model {
 
   @BelongsTo(() => Categories)
   category: Categories;
+
+  @HasMany(() => Comments)
+  comments: Comments[];
 }

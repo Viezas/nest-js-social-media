@@ -9,6 +9,8 @@ import { CategoryModule } from './modules/category/category.module';
 import { Categories } from './sequelize/category.schema';
 import { PostModule } from './modules/post/post.module';
 import { Posts } from './sequelize/post.schema';
+import { CommentModule } from './modules/comment/comment.module';
+import { Comments } from './sequelize/comment.schema';
 
 @Module({
   imports: [
@@ -20,11 +22,12 @@ import { Posts } from './sequelize/post.schema';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [Users, Categories, Posts],
+      models: [Users, Categories, Posts, Comments],
     }),
     UserModule,
     CategoryModule,
     PostModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

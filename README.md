@@ -16,6 +16,30 @@ Copy the example env file and make the required configuration changes in the .en
 
 ---
 
+## Installation
+
+**It is important to set all variables in the `.env` file before starting this section**
+
+**Install your dependencies :**
+
+To have your `/node_modules` directory :
+
+    npm install
+
+**Create a server**
+
+    npm run start:dev
+
+Your server should be available at this address :
+
+    http://127.0.0.1:3000/
+
+If you wish to change your port :
+
+    src > main > update app.listen(PORT) line 6
+
+---
+
 ## Database
 
 For more convenience, you can find an .sql file which contain our database already filled with data
@@ -36,6 +60,8 @@ Since it's a social media, of course there will be users
         - id, first_name, last_name, username, email, email_verified_at, password, phone, pfp_url, remember_token, created_at, updated_at
 
     Expected features related to a user:
+        - Posts
+            - A user can create a post
         - Likes
             - A user can like a post or a post comment
         - Followers

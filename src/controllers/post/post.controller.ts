@@ -64,7 +64,7 @@ export class PostController {
   }
 
   /**
-   * Upodate a post by id
+   * Update a post by id
    *
    * @param number id
    * @param Categories request
