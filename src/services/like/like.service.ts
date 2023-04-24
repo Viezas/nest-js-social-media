@@ -66,45 +66,6 @@ export class LikeService {
 
 
     /**
-     * Update a like
-     * @param {number} id
-     * @param {Likes} request
-     */
-    async update(
-        id: number,
-        request: Likes,
-    ): Promise<Likes | NotFoundException | NotAcceptableException> {
-        const like = this.find(id)
-
-        if (!like) {
-            return new NotFoundException('Like not found');
-        }
-
-        const user = await Users.findOne({
-            where: { id: request.user_id },
-        });
-
-        if (!user) {
-            return new NotAcceptableException('User unknown');
-        } else {
-            await this.likeModel.update(
-                {
-                    user_id: request.user_id,
-                    likeable_type: request.likeable_type,
-                    likeable_id: request.likeable_id,
-                    updated_at: new Date(),
-                },
-                { where: { id } },
-            );
-
-            return await this.likeModel.findOne({
-                where: { id },
-            });
-        }
-    }
-
-
-    /**
      * Delete a like
      * @param {number} id
      * @returns {any} Promise

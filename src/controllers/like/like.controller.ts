@@ -65,25 +65,6 @@ export class LikeController {
 
 
     /**
-     * update a like by id
-     * @param {number} id
-     * @param {Likes} request
-     * @returns Promise
-     */
-    @Put(':id/update')
-    @HttpCode(200)
-    update(
-        @Param('id', ParseIntPipe)
-            id: number,
-        @Body() request: Likes,
-    ): Promise<Likes | NotFoundException | NotAcceptableException> {
-        return this.likeService.update(id, request).then((like) => {
-            return like;
-        });
-    }
-
-
-    /**
      * Delete a like by id
      * @param {number} id
      * @returns Promise
