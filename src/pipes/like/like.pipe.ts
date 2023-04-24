@@ -7,7 +7,7 @@ import {
 import { ObjectSchema } from 'joi';
 
 @Injectable()
-export class CommentPipe implements PipeTransform {
+export class LikePipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
 
   transform(value: any, metadata: ArgumentMetadata) {
