@@ -37,4 +37,27 @@ export class LikeService {
     }
 
 
+    /**
+     * Create a new like
+     * @param {Likes} request
+     * @returns Promise
+     * @throws NotAcceptableException
+     */
+    async store(request: Likes): Promise<Likes | NotAcceptableException>  {
+        const user = await Users.findOne({
+            where: { id: request.user_id },
+        });
+
+        if (!user) {
+            return new NotAcceptableException('User unknown');
+        }
+
+        return await this.likeModel.create({
+            user_id: request.user_id,
+            likeable_type: request.likeable_type,
+            likeable_id: request.likeable_id,
+            created_at: new Date(),
+            updated_at: new Date(),
+        });
+    }
 }

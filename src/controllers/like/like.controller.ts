@@ -12,11 +12,10 @@ import {
     Put,
     UsePipes,
 } from '@nestjs/common';
-//import { CommentPipe } from 'src/pipes/comment/comment.pipe';
 import { Likes } from 'src/sequelize/like.schema';
 import { LikeService } from 'src/services/like/like.service';
-import {Comments} from "../../sequelize/comment.schema";
-//import commentValidator from 'src/validations/comment/comment.validation';
+import likeValidator from 'src/validations/like/like.validation';
+import { LikePipe } from "../../pipes/like/like.pipe";
 
 @Controller('likes')
 export class LikeController {
@@ -46,5 +45,20 @@ export class LikeController {
             id: number,
     ): Promise<Likes | null> {
         return this.likeService.find(id);
+    }
+
+
+    /**
+     * Create a new like from request body
+     * @param {Likes} request
+     * @returns Likes
+     */
+    @Post('store')
+    @HttpCode(201)
+    @UsePipes(new LikePipe(likeValidator))
+    store(@Body() request: Likes): Promise<Likes | NotAcceptableException> {
+        return this.likeService.store(request).then((like) => {
+            return like;
+        });
     }
 }
