@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Posts } from './post.schema';
 import { Comments } from './comment.schema';
+import { Likes } from './like.schema';
 import { user_followers } from './follower.schema';
 
 @Table
@@ -51,6 +52,9 @@ export class Users extends Model {
 
   @HasMany(() => Comments)
   comments: Comments[];
+
+  @HasMany(() => Likes)
+  likes: Likes[];
 
   @HasMany(() => user_followers)
   followers: user_followers[];
