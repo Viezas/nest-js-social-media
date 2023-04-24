@@ -6,18 +6,21 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Users } from 'src/sequelize/user.schema';
 import { Likes } from "../../sequelize/like.schema";
+import {Comments} from "../../sequelize/comment.schema";
+import {Posts} from "../../sequelize/post.schema";
 
 @Injectable()
 export class LikeService {
+
     constructor(
         @InjectModel(Likes)
         private likeModel: typeof Likes,
     ) {}
 
+
     /**
      * Get all likes
-     *
-     * @returns Promise
+     * @returns {Likes} Promise
      */
     all(): Promise<Likes[]> {
         return this.likeModel.findAll({ include: [Users] });
@@ -27,7 +30,7 @@ export class LikeService {
     /**
      * Get a like by id
      * @param {number} id
-     * @returns Promise
+     * @returns {Likes} Promise
      */
     find(id: number): Promise<Likes | null> {
         return this.likeModel.findOne({
@@ -40,7 +43,7 @@ export class LikeService {
     /**
      * Create a new like
      * @param {Likes} request
-     * @returns Promise
+     * @returns {Likes} Promise
      * @throws NotAcceptableException
      */
     async store(request: Likes): Promise<Likes | NotAcceptableException>  {
@@ -59,5 +62,69 @@ export class LikeService {
             created_at: new Date(),
             updated_at: new Date(),
         });
+    }
+
+
+    /**
+     * Update a like
+     * @param {number} id
+     * @param {Likes} request
+     */
+    async update(
+        id: number,
+        request: Likes,
+    ): Promise<Likes | NotFoundException | NotAcceptableException> {
+        const like = this.find(id)
+
+        if (!like) {
+            return new NotFoundException('Like not found');
+        }
+
+        const user = await Users.findOne({
+            where: { id: request.user_id },
+        });
+
+        if (!user) {
+            return new NotAcceptableException('User unknown');
+        } else {
+            await this.likeModel.update(
+                {
+                    user_id: request.user_id,
+                    likeable_type: request.likeable_type,
+                    likeable_id: request.likeable_id,
+                    updated_at: new Date(),
+                },
+                { where: { id } },
+            );
+
+            return await this.likeModel.findOne({
+                where: { id },
+            });
+        }
+    }
+
+
+    /**
+     * Delete a like
+     * @param {number} id
+     * @returns {any} Promise
+     * @throws NotFoundException
+     */
+    async destroy(id: number): Promise<any> {
+        const like = await this.likeModel.findOne({
+            where: { id },
+        });
+
+        if (!like) {
+            return new NotFoundException("This like doesn't exist");
+        }
+
+        return await this.likeModel
+            .destroy({
+                where: { id },
+            })
+            .then((response) => {
+                return 'Like deleted';
+            });
     }
 }

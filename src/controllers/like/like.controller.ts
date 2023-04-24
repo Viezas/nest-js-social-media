@@ -16,6 +16,7 @@ import { Likes } from 'src/sequelize/like.schema';
 import { LikeService } from 'src/services/like/like.service';
 import likeValidator from 'src/validations/like/like.validation';
 import { LikePipe } from "../../pipes/like/like.pipe";
+import {Comments} from "../../sequelize/comment.schema";
 
 @Controller('likes')
 export class LikeController {
@@ -60,5 +61,39 @@ export class LikeController {
         return this.likeService.store(request).then((like) => {
             return like;
         });
+    }
+
+
+    /**
+     * update a like by id
+     * @param {number} id
+     * @param {Likes} request
+     * @returns Promise
+     */
+    @Put(':id/update')
+    @HttpCode(200)
+    update(
+        @Param('id', ParseIntPipe)
+            id: number,
+        @Body() request: Likes,
+    ): Promise<Likes | NotFoundException | NotAcceptableException> {
+        return this.likeService.update(id, request).then((like) => {
+            return like;
+        });
+    }
+
+
+    /**
+     * Delete a like by id
+     * @param {number} id
+     * @returns Promise
+     */
+    @Delete(':id/destroy')
+    @HttpCode(200)
+    destroy(
+        @Param('id', ParseIntPipe)
+            id: number,
+    ): Promise<Likes> {
+        return this.likeService.destroy(id);
     }
 }
