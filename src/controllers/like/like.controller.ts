@@ -32,4 +32,19 @@ export class LikeController {
     index(): Promise<Likes[]> {
         return this.likeService.all();
     }
+
+
+    /**
+     * Return a like by id
+     * @param {number} id
+     * @returns Promise
+     */
+    @Get(':id')
+    @HttpCode(200)
+    show(
+        @Param('id', ParseIntPipe)
+            id: number,
+    ): Promise<Likes | null> {
+        return this.likeService.find(id);
+    }
 }

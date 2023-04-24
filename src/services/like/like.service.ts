@@ -24,4 +24,17 @@ export class LikeService {
     }
 
 
+    /**
+     * Get a like by id
+     * @param {number} id
+     * @returns Promise
+     */
+    find(id: number): Promise<Likes | null> {
+        return this.likeModel.findOne({
+            where: { id },
+            include: [Users],
+        });
+    }
+
+
 }
