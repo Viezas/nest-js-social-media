@@ -11,6 +11,8 @@ import { PostModule } from './modules/post/post.module';
 import { Posts } from './sequelize/post.schema';
 import { CommentModule } from './modules/comment/comment.module';
 import { Comments } from './sequelize/comment.schema';
+import { FollowerModule } from './modules/follower/follower.module';
+import { Followers } from './sequelize/follower.schema';
 
 @Module({
   imports: [
@@ -22,12 +24,13 @@ import { Comments } from './sequelize/comment.schema';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [Users, Categories, Posts, Comments],
+      models: [Users, Categories, Posts, Comments, Followers],
     }),
     UserModule,
     CategoryModule,
     PostModule,
     CommentModule,
+    FollowerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
