@@ -23,7 +23,7 @@ export class LikeController {
     constructor(private readonly likeService: LikeService) {}
 
     /**
-     * Return a listing of all comments
+     * Return a listing of all likes
      *
      * @returns Promise
      */
