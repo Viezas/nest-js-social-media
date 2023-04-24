@@ -11,6 +11,8 @@ import { PostModule } from './modules/post/post.module';
 import { Posts } from './sequelize/post.schema';
 import { CommentModule } from './modules/comment/comment.module';
 import { Comments } from './sequelize/comment.schema';
+import { LikeModule } from './modules/like/like.module';
+import { Likes } from './sequelize/like.schema';
 import { FollowerModule } from './modules/follower/follower.module';
 import { user_followers } from './sequelize/follower.schema';
 
@@ -34,6 +36,7 @@ import { user_followers } from './sequelize/follower.schema';
     PostModule,
     CommentModule,
     FollowerModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
