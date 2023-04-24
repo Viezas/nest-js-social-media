@@ -5,10 +5,11 @@ import {
   Model,
   Table,
   UpdatedAt,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Posts } from './post.schema';
 import { Comments } from './comment.schema';
-import { Followers } from './follower.schema';
+import { user_followers } from './follower.schema';
 
 @Table
 export class Users extends Model {
@@ -51,6 +52,10 @@ export class Users extends Model {
   @HasMany(() => Comments)
   comments: Comments[];
 
-  @HasMany(() => Followers)
-  followers: Followers[];
+  @HasMany(() => user_followers)
+  followers: user_followers[];
+
+  @BelongsToMany(() => Users, () => user_followers, "user_id")
+  user: Users;
+
 }

@@ -1,14 +1,14 @@
 import {
-   BelongsTo,
+  BelongsTo, BelongsToMany,
   Column,
-  ForeignKey,
+  ForeignKey, HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { Users } from './user.schema';
 
 @Table
-export class Followers extends Model {
+export class user_followers extends Model {
   @ForeignKey(() => Users)
   @Column
   user_id: number;
@@ -17,6 +17,7 @@ export class Followers extends Model {
   @Column
   following_id: number;
 
-  @BelongsTo(() => Users)
+  @BelongsToMany(() => Users, () => user_followers, "following_id")
   user: Users;
+
 }

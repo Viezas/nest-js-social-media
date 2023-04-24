@@ -12,7 +12,7 @@ import { Posts } from './sequelize/post.schema';
 import { CommentModule } from './modules/comment/comment.module';
 import { Comments } from './sequelize/comment.schema';
 import { FollowerModule } from './modules/follower/follower.module';
-import { Followers } from './sequelize/follower.schema';
+import { user_followers } from './sequelize/follower.schema';
 
 @Module({
   imports: [
@@ -24,7 +24,10 @@ import { Followers } from './sequelize/follower.schema';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [Users, Categories, Posts, Comments, Followers],
+      models: [Users, Categories, Posts, Comments, user_followers],
+      define: {
+        timestamps: false
+      }
     }),
     UserModule,
     CategoryModule,
