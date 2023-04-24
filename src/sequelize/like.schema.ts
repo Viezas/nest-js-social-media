@@ -1,42 +1,28 @@
 import {
+  BelongsTo,
   Column,
-  CreatedAt,
+  CreatedAt, ForeignKey,
   HasMany,
   Model,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { Posts } from './post.schema';
-import { Comments } from './comment.schema';
+import { Users } from './user.schema';
 
 @Table
-export class Users extends Model {
+export class Likes extends Model {
+  @ForeignKey(() => Users)
   @Column
-  first_name: string;
+  user_id: number;
+
+  @BelongsTo(() => Users)
+  user: Users;
 
   @Column
-  last_name: string;
+  likeable_type: string;
 
   @Column
-  username: string;
-
-  @Column
-  email: string;
-
-  @Column
-  email_verified_at: Date;
-
-  @Column
-  password: string;
-
-  @Column
-  phone: string;
-
-  @Column
-  pfp_url: string;
-
-  @Column
-  remember_token: string;
+  likeable_id: number;
 
   @CreatedAt
   created_at: Date;
@@ -44,9 +30,4 @@ export class Users extends Model {
   @UpdatedAt
   updated_at: Date;
 
-  @HasMany(() => Posts)
-  posts: Posts[];
-
-  @HasMany(() => Comments)
-  comments: Comments[];
 }
