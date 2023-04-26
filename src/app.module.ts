@@ -26,7 +26,7 @@ import { user_followers } from './sequelize/follower.schema';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [Users, Categories, Posts, Comments, user_followers],
+      models: [Users, Categories, Posts, Comments, Likes, user_followers],
       define: {
         timestamps: false
       }
